@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { Box, Logo } from "./styles";
 import { Home } from "@mui/icons-material";
@@ -12,6 +13,8 @@ import {
 } from "@mui/material";
 
 const AppBar = () => {
+  const { cart } = useSelector((state) => state);
+
   const history = useHistory();
 
   const [showDisplay, setShowDisplay] = useState(
@@ -41,7 +44,7 @@ const AppBar = () => {
 
         {showDisplay ? (
           <IconButton size="large" color="inherit" onClick={handleShowCart}>
-            <Badge badgeContent={17} color="error">
+            <Badge badgeContent={cart.length} color="error">
               <ShoppingCart />
             </Badge>
           </IconButton>

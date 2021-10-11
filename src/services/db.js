@@ -30,7 +30,7 @@ const productsDB = [
     price: 99.9,
     discount: 10,
     stock: 5,
-    image: "DwightStrangler.png",
+    image: "DwightStapler.png",
   },
 
   {
@@ -39,7 +39,7 @@ const productsDB = [
     price: 99.9,
     discount: 10,
     stock: 2,
-    image: "DwightStapler.png",
+    image: "DwightStrangler.png",
   },
   {
     id: 6,

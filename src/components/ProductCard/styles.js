@@ -41,6 +41,12 @@ export const NormalPrice = styled(Typography)(({ theme }) => ({
   margin: "5px 0",
 }));
 
+export const Qauntity = styled(Typography)(({ theme }) => ({
+  fontSize: "1.4rem",
+  color: theme.palette.text.secondary,
+  margin: "5px 0",
+}));
+
 export const DiscountPrice = styled(Typography)(({ theme }) => ({
   fontSize: "1.7rem",
   fontWeight: "bolder",

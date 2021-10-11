@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import currencyFormatter from "../../utils/currencyFormatter";
+import { addToCartThunk } from "../../store/modules/cart/thunks";
 import { IconButton } from "@mui/material";
 import { Add, AddShoppingCart, Remove } from "@mui/icons-material";
 import { Button, ButtonContainer, ButtonController } from "./styles";
 
-const AddButton = ({
-  product: { price, discount, stock },
-  quantity,
-  setQuantity,
-  initialQuantity,
-}) => {
-  const [total, setTotal] = useState(quantity * price);
+const AddButton = ({ product, quantity, setQuantity }) => {
+  const INITIAL_QUANTITY = 0;
+
+  const [total, setTotal] = useState(quantity * product.price);
 
   const [
     isDecreaseQuantityButtonDisabled,
@@ -22,6 +21,16 @@ const AddButton = ({
     setIsIncreaseQuantityButtonDisabled,
   ] = useState(false);
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setTotal(quantity * (product.price - product.discount));
+    setIsDecreaseQuantityButtonDisabled(quantity === INITIAL_QUANTITY);
+    setIsIncreaseQuantityButtonDisabled(quantity === product.stock);
+
+    // eslint-disable-next-line
+  }, [quantity]);
+
   const decreaseQuantity = () => {
     setQuantity(quantity - 1);
   };
@@ -30,13 +39,15 @@ const AddButton = ({
     setQuantity(quantity + 1);
   };
 
-  useEffect(() => {
-    setTotal(quantity * (price - discount));
-    setIsDecreaseQuantityButtonDisabled(quantity === initialQuantity);
-    setIsIncreaseQuantityButtonDisabled(quantity === stock);
+  const addProductToCart = () => {
+    const updatedProduct = {
+      ...product,
+      quantity,
+      total: (product.price - product.discount) * quantity,
+    };
 
-    // eslint-disable-next-line
-  }, [quantity]);
+    dispatch(addToCartThunk(updatedProduct));
+  };
 
   return (
     <ButtonContainer>
@@ -65,8 +76,7 @@ const AddButton = ({
         color="error"
         disabled={isDecreaseQuantityButtonDisabled}
         fullWidth
-        // disabled={isAddShoppingCartButtonDisabled}
-        // onClick={addProductToShoppingCart}
+        onClick={addProductToCart}
       >
         <AddShoppingCart />
         <span>{currencyFormatter(total)}</span>
